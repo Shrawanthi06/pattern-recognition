@@ -1,21 +1,25 @@
 import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
-from src.image_opr import(preprocess_square,preprocess_rectangle,save_matrix_as_img)
+# Ensure the lab2 directory is in sys.path so imports like `from src...` work from any working directory
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
 
-from src.matrix_opr import(reconstruction_error,relative_error,error_img,energy_captured,find_k_for_energy,compression_ratio)
+from src.image_opr import (preprocess_square, preprocess_rectangle, save_matrix_as_img)
+from src.matrix_opr import (reconstruction_error, relative_error, error_img, energy_captured, find_k_for_energy, compression_ratio)
+from src.svd_opr import (compute_SVD, reconstruct_SVD)
+from src.evd_opr import (compute_EVD, sort_eigenvalues, select_components, reconstruct_EVD, reconstruct_EVD_reduced, verify_EVD)
 
-from src.svd_opr import(compute_SVD,reconstruct_SVD)
-
-from src.evd_opr import(compute_EVD,sort_eigenvalues,select_components,reconstruct_EVD,reconstruct_EVD_reduced,verify_EVD)
-
-#path
-
-Square_img=r"input\cat_03.png"
-Rectangle_img=r"input\cat_03_rect.png"
-Output_dir="/output"
+# Paths relative to this script's directory
+Input_dir = os.path.join(SCRIPT_DIR, "input")
+Output_dir = os.path.join(SCRIPT_DIR, "output")
 os.makedirs(Output_dir, exist_ok=True)
+
+Square_img = os.path.join(Input_dir, "cat_03.png")
+Rectangle_img = os.path.join(Input_dir, "cat_03_rect.png")
 
 def print_separator(title):
 	print()

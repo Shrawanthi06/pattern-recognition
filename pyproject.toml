@@ -1,0 +1,17 @@
+[project]
+name = "pattern-recognition"
+version = "0.1.0"
+description = "Lab assignments for pattern recognition"
+readme = "README.md"
+authors = [
+    { name = "Shrawanthi06", email = "shrawanthip2005@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.10.0",
+    "numpy>=2.2.0",
+    "pillow>=11.1.0",
+]
+
+[tool.uv]
+package = false

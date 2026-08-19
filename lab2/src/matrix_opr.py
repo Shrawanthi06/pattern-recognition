@@ -20,9 +20,13 @@ def energy_captured(singular_values,k):
 def find_k_for_energy(singular_values, target):
 	cumulative=np.cumsum(singular_values**2)
 	total=np.sum(singular_values**2)
+	if total == 0:
+		return 1
 	fraction=cumulative/total
-	k=np.argmax(fraction>=target)+1
-	return int(k)
+	indices=np.where(fraction>=target)[0]
+	if len(indices) > 0:
+		return int(indices[0] + 1)
+	return len(singular_values)
 
 def compression_ratio(m,n,k):
 	og=m*n
