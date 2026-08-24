@@ -1,19 +1,9 @@
-import os
-import sys
 import math
-
-SCRIPT_DIR=os.path.dirname(os.path.abspath(__file__))
-if SCRIPT_DIR not in sys.path:
-    sys.path.insert(0,SCRIPT_DIR)
 
 from src.preprocessing import train_val_test_split
 from src.regression import PolynomialRegression, RidgePolynomialRegression
 from src.metrics import mean_squared_error,root_mean_squared_error,mean_absolute_error,r2_score
 from src.visualization import (plot_fitted_curves,plot_degree_vs_error,plot_regularization_comparison,plot_residuals,plot_learning_curve)
-
-INPUT_DIR=os.path.join(SCRIPT_DIR,"input")
-OUTPUT_DIR=os.path.join(SCRIPT_DIR,"output")
-os.makedirs(OUTPUT_DIR,exist_ok=True)
 
 def load_data(filename):
     x = []
@@ -38,7 +28,7 @@ def print_separator(title):
 def main():
     print_separator("POLYNOMIAL REGRESSION & MODEL SELECTION")   
     #load dataset
-    data_path=os.path.join(INPUT_DIR,"noisy_3.txt")
+    data_path="input/noisy_3.txt"
     print(f"Loading dataset from: {data_path}")
     x_all,y_all=load_data(data_path)
     N=len(x_all)
@@ -105,20 +95,20 @@ def main():
     #fitted curves plot for degrees 1,2,3,5,8
     key_degrees = [d for d in [1,2,3,5,8] if d in models]
     plot_models = {f"Degree {d}": models[d] for d in key_degrees}
-    fitted_plot_path = os.path.join(OUTPUT_DIR,"fitted_polynomial_curves.png")
+    fitted_plot_path = "output/fitted_polynomial_curves.png"
     plot_fitted_curves(x_all, y_all,plot_models,fitted_plot_path,title="Polynomial Regression Fits on Noisy Observations")
     print(f"[Saved] {fitted_plot_path}")
 
     #degree vs error curve
     train_mses=[r["train_mse"] for r in results]
     val_mses=[r["val_mse"] for r in results]
-    err_plot_path=os.path.join(OUTPUT_DIR, "degree_vs_error.png")
+    err_plot_path = "output/degree_vs_error.png"
     plot_degree_vs_error(degrees,train_mses,val_mses,err_plot_path)
     print(f"[Saved] {err_plot_path}")
 
     #residual distribution plot
     test_preds=best_model.predict(x_test)
-    res_plot_path=os.path.join(OUTPUT_DIR,"residual_distribution.png")
+    res_plot_path = "output/residual_distribution.png"
     plot_residuals(y_test,test_preds,res_plot_path)
     print(f"[Saved] {res_plot_path}")
 
@@ -139,7 +129,7 @@ def main():
         label=f"Ridge (alpha={a})"
         ridge_models[label]=ridge
         print(f"{label:<25} | {r_val_mse:<10.4f} | {r_test_mse:<10.4f}")
-    ridge_plot_path=os.path.join(OUTPUT_DIR,"regularization_comparison.png")
+    ridge_plot_path = "output/regularization_comparison.png"
     plot_regularization_comparison(x_all,y_all,unreg_model,ridge_models,ridge_plot_path)
     print(f"[Saved] {ridge_plot_path}")
 
@@ -179,7 +169,7 @@ def main():
         lc_sizes.append(sub_size)
         lc_train_mses.append(tr_err)
         lc_val_mses.append(v_err)
-    lc_plot_path=os.path.join(OUTPUT_DIR,"learning_curves.png")
+    lc_plot_path = "output/learning_curves.png"
     plot_learning_curve(lc_sizes,lc_train_mses,lc_val_mses,lc_plot_path)
     print(f"[Saved] {lc_plot_path}")
 

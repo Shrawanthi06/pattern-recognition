@@ -1,10 +1,4 @@
-import os
-import sys
-
-SCRIPT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if SCRIPT_DIR not in sys.path:
-    sys.path.insert(0, SCRIPT_DIR)
-from src.linear_algebra import transpose,matmul,matvec,solve_linear_system,identity
+import numpy as np
 from src.preprocessing import StandardScaler,create_polynomial_features
 
 class PolynomialRegression:
@@ -22,17 +16,13 @@ class PolynomialRegression:
             x_proc=x
 
         #construct Vandermonde design matrix X (N x (degree + 1))
-        X=create_polynomial_features(x_proc, self.degree)
+        X=np.array(create_polynomial_features(x_proc, self.degree))
+        y=np.array(y)
 
-        #compute X^T
-        X_T=transpose(X)
-
-        #compute X^T * X and X^T * y
-        XTX=matmul(X_T, X)
-        XTy=matvec(X_T, y)
-
-        #solve (X^T X) * theta = X^T y
-        self.theta=solve_linear_system(XTX,XTy)
+        #closed-form Normal Equations: theta = (X^T X)^-1 X^T y
+        XTX=X.T @ X
+        XTy=X.T @ y
+        self.theta=np.linalg.inv(XTX) @ XTy
         return self
 
     def predict(self,x):
@@ -42,8 +32,8 @@ class PolynomialRegression:
             x_proc=self.scaler.transform(x)
         else:
             x_proc=x
-        X=create_polynomial_features(x_proc,self.degree)
-        return matvec(X,self.theta)
+        X=np.array(create_polynomial_features(x_proc,self.degree))
+        return (X @ self.theta).tolist()
 
 
 class RidgePolynomialRegression:
@@ -60,17 +50,18 @@ class RidgePolynomialRegression:
         else:
             x_proc=x
 
-        X =create_polynomial_features(x_proc,self.degree)
-        X_T =transpose(X)
-        XTX =matmul(X_T,X)
-        XTy =matvec(X_T,y)
+        X =np.array(create_polynomial_features(x_proc,self.degree))
+        y =np.array(y)
+        XTX =X.T @ X
+        XTy =X.T @ y
 
         k = self.degree + 1
-        # Add regularization penalty alpha * I' to XTX
-        # Do not penalize w_0 (bias term)
-        for i in range(1, k):
-            XTX[i][i] += self.alpha
-        self.theta = solve_linear_system(XTX, XTy)
+        # Regularization matrix: alpha * I', with 0 for intercept w_0
+        alpha_matrix = self.alpha * np.eye(k)
+        alpha_matrix[0, 0] = 0.0
+
+        # Closed-form Ridge formula: theta = (X^T X + alpha * I')^-1 X^T y
+        self.theta = np.linalg.inv(XTX + alpha_matrix) @ XTy
         return self
 
     def predict(self,x):
@@ -82,8 +73,8 @@ class RidgePolynomialRegression:
         else:
             x_proc=x
 
-        X=create_polynomial_features(x_proc,self.degree)
-        return matvec(X,self.theta)
+        X=np.array(create_polynomial_features(x_proc,self.degree))
+        return (X @ self.theta).tolist()
 
 
 if __name__ == "__main__":
