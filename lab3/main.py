@@ -3,7 +3,7 @@ import math
 from src.preprocessing import train_val_test_split
 from src.regression import PolynomialRegression, RidgePolynomialRegression
 from src.metrics import mean_squared_error,root_mean_squared_error,mean_absolute_error,r2_score
-from src.visualization import (plot_fitted_curves,plot_degree_vs_error,plot_regularization_comparison,plot_residuals,plot_learning_curve)
+from src.visualization import (plot_fitted_curves,plot_degree_vs_error,plot_regularization_comparison,plot_residuals)
 
 def load_data(filename):
     x = []
@@ -151,27 +151,6 @@ def main():
     mean_seed_mse=sum(seed_test_mses)/len(seed_test_mses)
     std_seed_mse=math.sqrt(sum((val-mean_seed_mse)**2 for val in seed_test_mses)/len(seed_test_mses))
     print(f"\nRobustness across 5 seeds: Test MSE = {mean_seed_mse:.4f} +/- {std_seed_mse:.4f}")
-
-    #learning Curves (sample size vs error)
-    print_separator("LEARNING CURVE ANALYSIS")
-    sample_fractions=[0.01,0.05,0.10,0.25,0.50,0.75,1.0]
-    lc_sizes=[]
-    lc_train_mses=[]
-    lc_val_mses=[]    
-    for frac in sample_fractions:
-        sub_size=max(10,int(len(x_train)*frac))
-        sub_x_tr=x_train[:sub_size]
-        sub_y_tr=y_train[:sub_size]      
-        lc_model=PolynomialRegression(degree=best_deg,use_scaling=True)
-        lc_model.fit(sub_x_tr,sub_y_tr)      
-        tr_err=mean_squared_error(sub_y_tr,lc_model.predict(sub_x_tr))
-        v_err=mean_squared_error(y_val,lc_model.predict(x_val))       
-        lc_sizes.append(sub_size)
-        lc_train_mses.append(tr_err)
-        lc_val_mses.append(v_err)
-    lc_plot_path = "output/learning_curves.png"
-    plot_learning_curve(lc_sizes,lc_train_mses,lc_val_mses,lc_plot_path)
-    print(f"[Saved] {lc_plot_path}")
 
     #noise Level Estimation
     residuals=[yt-yp for yt, yp in zip(y_test, test_preds)]
