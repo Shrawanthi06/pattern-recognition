@@ -92,17 +92,4 @@ def plot_residuals(y_true, y_pred, output_path):
     plt.savefig(output_path,dpi=300)
     plt.close()
 
-def plot_learning_curve(train_sizes,train_mses,val_mses,output_path):
-    #error vs training sample size
-    plt.figure(figsize=(10,6))
-    plt.plot(train_sizes,train_mses,marker="o",color="blue",label="Training MSE",linewidth=2)
-    plt.plot(train_sizes,val_mses,marker="s",color="red",label="Validation MSE",linewidth=2) 
-    plt.yscale("log")
-    plt.title("Learning Curves (MSE vs Training Set Size)",fontsize=14,fontweight="bold")
-    plt.xlabel("Number of Training Samples",fontsize=12)
-    plt.ylabel("Mean Squared Error (MSE, log scale)",fontsize=12)
-    plt.grid(True, which="both", linestyle="--",alpha=0.6)
-    plt.legend(loc="best",fontsize=11)
-    plt.tight_layout()
-    plt.savefig(output_path,dpi=300)
-    plt.close()
+
