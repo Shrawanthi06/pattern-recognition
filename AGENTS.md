@@ -45,3 +45,18 @@ uv run python main.py
   plots before committing.
 - Check `git status` and review the diff before staging files.
 - Do not overwrite unrelated work already present in the working tree.
+
+# **Student Details**
+
+* I'm Shrawanthi P (26120098), pursuing M.Tech AI and Data Science, who one day wants to become a MLE or AI Engineer. I have a course on Pattern Recognition and Machine Learning semester and this repo is all about that.
+
+# **Coding & Notebook Rules**
+
+* Don't Overcomplicate than what's necessary. For example : using pathlib to map the path when you have the data in the nearby directory and could have used './' notation.
+* Use simple coding syntaxes in python, I'm a beginner python guy. So, need you to code reponsibily in a way that I can understand stuff.
+* While using commands. Make the commands very concise and straight to the point and also use **word** (i.e.) I want every heading in bold format and don't use H1 pretty often. Use things like ### (i.e.) multiple hashes to make it small.
+* The command should be very minimal as possible - Like use very few words.
+
+# **Reports**
+
+* Reports should be self-containted. When I ask for report, you don't write the content you only create the latex and put in the formulas, images and give me the template - Leaving out the content that needs to be filled.
