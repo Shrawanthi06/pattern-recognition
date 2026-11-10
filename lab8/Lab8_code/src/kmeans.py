@@ -1,4 +1,5 @@
 import numpy as np
+from .lcg import LCG
 
 
 class KMeans:
@@ -17,8 +18,8 @@ class KMeans:
         n_samples = len(X)
         k = min(self.K, n_samples)
 
-        # Randomly choose K initial observations as centroids
-        rng = np.random.default_rng(self.seed)
+        # Randomly choose K initial observations as centroids using LCG
+        rng = LCG(self.seed)
         chosen_indices = rng.choice(n_samples, k, replace=False)
         self.centers = X[chosen_indices].copy()
 

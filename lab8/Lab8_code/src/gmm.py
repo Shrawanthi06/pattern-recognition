@@ -1,4 +1,5 @@
 import numpy as np
+from .lcg import LCG
 
 
 def logsumexp(a, axis=1):
@@ -26,7 +27,7 @@ class GMM:
         n_samples, n_features = X.shape
         k = min(self.K, n_samples)
 
-        rng = np.random.default_rng(self.seed)
+        rng = LCG(self.seed)
         chosen_indices = rng.choice(n_samples, k, replace=False)
         self.means_ = X[chosen_indices].copy()
         self.vars_ = np.tile(np.maximum(np.var(X, axis=0), self.reg), (k, 1))

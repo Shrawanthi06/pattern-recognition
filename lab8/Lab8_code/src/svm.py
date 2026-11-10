@@ -1,4 +1,5 @@
 import numpy as np
+from .lcg import LCG
 
 
 class BinarySVM:
@@ -36,7 +37,7 @@ class BinarySVM:
         K = self._kernel(X, X)
         alphas = np.zeros(n)
         b = 0.0
-        rng = np.random.default_rng(self.seed)
+        rng = LCG(self.seed)
 
         passes = 0
         iteration = 0
@@ -133,7 +134,7 @@ class SVM:
 
         # Subsample if dataset exceeds computational cap for SMO
         if len(X) > self.max_train:
-            rng = np.random.default_rng(self.seed)
+            rng = LCG(self.seed)
             sampled_ids = []
             for c in self.classes_:
                 c_ids = np.flatnonzero(y == c)

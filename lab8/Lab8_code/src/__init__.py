@@ -7,6 +7,7 @@ from .gmm import GMM, GMMClassifier, ClassConditionalGMM, FrameGMM
 from .svm import SVM, BinarySVM
 from .speech import SpeechSummary, FrameTransformer
 from .kmeans import KMeans
+from .lcg import LCG
 
 __all__ = [
     "StandardScaler",
@@ -22,5 +23,6 @@ __all__ = [
     "SpeechSummary",
     "FrameTransformer",
     "KMeans",
+    "LCG",
 ]
 
