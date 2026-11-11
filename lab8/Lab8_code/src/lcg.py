@@ -3,11 +3,6 @@ import numpy as np
 
 class LCG:
     """Linear Congruential Generator (LCG) for reproducible pseudo-random numbers.
-
-    Recurrence relation:
-        X_{n+1} = (a * X_n + c) mod m
-    Default constants (Numerical Recipes / Knuth):
-        a = 1664525, c = 1013904223, m = 2**32
     """
 
     def __init__(self, seed=42, a=1664525, c=1013904223, m=2**32):
